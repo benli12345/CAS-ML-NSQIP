@@ -244,7 +244,72 @@ plot(perf_symptomatic)
 plot(perf_asymptomatic, add = TRUE, col = 'blue')
 abline(a=0,b=1)
 
-#Subgroup analysis based on urgency of surgery
+#Subgroup analysis based on stent type
+test_1 <- test[test$STENT == 1, ]
+test_2 <- test[test$STENT == 2, ]
+test_3 <- test[test$STENT == 3, ]
+test_4 <- test[test$STENT == 4, ]
+test_5 <- test[test$STENT == 5, ]
+test_6 <- test[test$STENT == 6, ]
+
+predictors_test_1 <- test_1 %>% select(AdmQtr, OperYR, Age, SEX, BMI, RACE_NEW, ETHNICITY_HISPANIC, ORIGIN, HYPERMED, DIABETES, SMOKE_CURRENT, HXCHF, HXCOPD, DIALYSIS, FNSTATUS2, PHYSHIGHRISK, ASPIRIN, STATIN, BETAB, PRSODM_mmolL, PRBUN_mmolL, PRCREAT_umolL, PRALBUM_gL, PRWBC_Kmm3, PRHCT_LL, PRPLATE_Kcumm, PRINR, PRPTT_s, IPSI_STENOSIS, CONTRA_STENOSIS, ANATHIGHRISK, SYMPTOMATIC, STENT, CASETYPE, ASACLAS, SURGSPEC)
+predictors_test_2 <- test_2 %>% select(AdmQtr, OperYR, Age, SEX, BMI, RACE_NEW, ETHNICITY_HISPANIC, ORIGIN, HYPERMED, DIABETES, SMOKE_CURRENT, HXCHF, HXCOPD, DIALYSIS, FNSTATUS2, PHYSHIGHRISK, ASPIRIN, STATIN, BETAB, PRSODM_mmolL, PRBUN_mmolL, PRCREAT_umolL, PRALBUM_gL, PRWBC_Kmm3, PRHCT_LL, PRPLATE_Kcumm, PRINR, PRPTT_s, IPSI_STENOSIS, CONTRA_STENOSIS, ANATHIGHRISK, SYMPTOMATIC, STENT, CASETYPE, ASACLAS, SURGSPEC)
+predictors_test_3 <- test_3 %>% select(AdmQtr, OperYR, Age, SEX, BMI, RACE_NEW, ETHNICITY_HISPANIC, ORIGIN, HYPERMED, DIABETES, SMOKE_CURRENT, HXCHF, HXCOPD, DIALYSIS, FNSTATUS2, PHYSHIGHRISK, ASPIRIN, STATIN, BETAB, PRSODM_mmolL, PRBUN_mmolL, PRCREAT_umolL, PRALBUM_gL, PRWBC_Kmm3, PRHCT_LL, PRPLATE_Kcumm, PRINR, PRPTT_s, IPSI_STENOSIS, CONTRA_STENOSIS, ANATHIGHRISK, SYMPTOMATIC, STENT, CASETYPE, ASACLAS, SURGSPEC)
+predictors_test_4 <- test_4 %>% select(AdmQtr, OperYR, Age, SEX, BMI, RACE_NEW, ETHNICITY_HISPANIC, ORIGIN, HYPERMED, DIABETES, SMOKE_CURRENT, HXCHF, HXCOPD, DIALYSIS, FNSTATUS2, PHYSHIGHRISK, ASPIRIN, STATIN, BETAB, PRSODM_mmolL, PRBUN_mmolL, PRCREAT_umolL, PRALBUM_gL, PRWBC_Kmm3, PRHCT_LL, PRPLATE_Kcumm, PRINR, PRPTT_s, IPSI_STENOSIS, CONTRA_STENOSIS, ANATHIGHRISK, SYMPTOMATIC, STENT, CASETYPE, ASACLAS, SURGSPEC)
+predictors_test_5 <- test_5 %>% select(AdmQtr, OperYR, Age, SEX, BMI, RACE_NEW, ETHNICITY_HISPANIC, ORIGIN, HYPERMED, DIABETES, SMOKE_CURRENT, HXCHF, HXCOPD, DIALYSIS, FNSTATUS2, PHYSHIGHRISK, ASPIRIN, STATIN, BETAB, PRSODM_mmolL, PRBUN_mmolL, PRCREAT_umolL, PRALBUM_gL, PRWBC_Kmm3, PRHCT_LL, PRPLATE_Kcumm, PRINR, PRPTT_s, IPSI_STENOSIS, CONTRA_STENOSIS, ANATHIGHRISK, SYMPTOMATIC, STENT, CASETYPE, ASACLAS, SURGSPEC)
+predictors_test_6 <- test_6 %>% select(AdmQtr, OperYR, Age, SEX, BMI, RACE_NEW, ETHNICITY_HISPANIC, ORIGIN, HYPERMED, DIABETES, SMOKE_CURRENT, HXCHF, HXCOPD, DIALYSIS, FNSTATUS2, PHYSHIGHRISK, ASPIRIN, STATIN, BETAB, PRSODM_mmolL, PRBUN_mmolL, PRCREAT_umolL, PRALBUM_gL, PRWBC_Kmm3, PRHCT_LL, PRPLATE_Kcumm, PRINR, PRPTT_s, IPSI_STENOSIS, CONTRA_STENOSIS, ANATHIGHRISK, SYMPTOMATIC, STENT, CASETYPE, ASACLAS, SURGSPEC)
+
+pred_1 <- predict(xgb, as.matrix(predictors_test_1))
+auc(test_1$MACE, pred_1)
+ci.auc(test_1$MACE, pred_1)
+
+pred_2 <- predict(xgb, as.matrix(predictors_test_2))
+auc(test_2$MACE, pred_2)
+ci.auc(test_2$MACE, pred_2)
+
+pred_3 <- predict(xgb, as.matrix(predictors_test_3))
+auc(test_3$MACE, pred_3)
+ci.auc(test_3$MACE, pred_3)
+
+pred_4 <- predict(xgb, as.matrix(predictors_test_4))
+auc(test_4$MACE, pred_4)
+ci.auc(test_4$MACE, pred_4)
+
+pred_5 <- predict(xgb, as.matrix(predictors_test_5))
+auc(test_5$MACE, pred_5)
+ci.auc(test_5$MACE, pred_5)
+
+pred_6 <- predict(xgb, as.matrix(predictors_test_6))
+auc(test_6$MACE, pred_6)
+ci.auc(test_6$MACE, pred_6)
+
+perf_1 <- prediction(pred_1, test_1$MACE)
+perf_1 <- performance(perf_1, "tpr","fpr")
+
+perf_2 <- prediction(pred_2, test_2$MACE)
+perf_2 <- performance(perf_2, "tpr","fpr")
+
+perf_3 <- prediction(pred_3, test_3$MACE)
+perf_3 <- performance(perf_3, "tpr","fpr")
+
+perf_4 <- prediction(pred_4, test_4$MACE)
+perf_4 <- performance(perf_4, "tpr","fpr")
+
+perf_5 <- prediction(pred_5, test_5$MACE)
+perf_5 <- performance(perf_5, "tpr","fpr")
+
+perf_6 <- prediction(pred_6, test_6$MACE)
+perf_6 <- performance(perf_6, "tpr","fpr")
+
+plot(perf_1)
+plot(perf_2, add = TRUE, col = 'blue')
+plot(perf_3, add = TRUE, col = 'orange')
+plot(perf_4, add = TRUE, col = 'green')
+plot(perf_5, add = TRUE, col = 'purple')
+plot(perf_6, add = TRUE, col = 'red')
+abline(a=0,b=1)
+
+#Subgroup analysis based on urgency
 test_urgent <- test[test$CASETYPE!=1, ]
 test_elective <- test[test$CASETYPE==1, ]
 predictors_test_urgent <- test_urgent %>% select(AdmQtr, OperYR, Age, SEX, BMI, RACE_NEW, ETHNICITY_HISPANIC, ORIGIN, HYPERMED, DIABETES, SMOKE_CURRENT, HXCHF, HXCOPD, DIALYSIS, FNSTATUS2, PHYSHIGHRISK, ASPIRIN, STATIN, BETAB, PRSODM_mmolL, PRBUN_mmolL, PRCREAT_umolL, PRALBUM_gL, PRWBC_Kmm3, PRHCT_LL, PRPLATE_Kcumm, PRINR, PRPTT_s, IPSI_STENOSIS, CONTRA_STENOSIS, ANATHIGHRISK, SYMPTOMATIC, STENT, CASETYPE, ASACLAS, SURGSPEC)
